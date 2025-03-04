@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marcelina/shared/components/constants.dart';
+import 'package:marcelina/shared/styles/color.dart';
 
 class LayoutScreen extends StatelessWidget {
   const LayoutScreen({super.key});
