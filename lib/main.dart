@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marcelina/modules/start/app_start_screen.dart';
 import 'modules/start/app_start_screen.dart';
 
 void main() {
