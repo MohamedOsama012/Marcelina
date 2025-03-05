@@ -1,9 +1,17 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:marcelina/modules/start/app_start_screen.dart';
-import 'modules/start/app_start_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:marcelina/shared/MyBlocObserver.dart';
+import 'package:marcelina/shared/styles/color.dart';
+import 'firebase_options.dart';
+import 'package:marcelina/modules/login/login_screen.dart';
 
-void main() {
-
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -13,13 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
       ),
-      home: const StartScreen(),
+      home: const LoginScreen(),
     );
   }
 }

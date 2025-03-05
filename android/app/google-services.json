@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "439997000106",
+    "project_id": "marcelina-73c2f",
+    "storage_bucket": "marcelina-73c2f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439997000106:android:fc05b09b940f319c8363d3",
+        "android_client_info": {
+          "package_name": "com.example.marcelina"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdlv4uDg1ZKw7hGa3lrffd5kb9WfTW_AY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
