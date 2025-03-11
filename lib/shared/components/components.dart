@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../styles/icon_broken.dart';
@@ -124,8 +125,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hintText,
-        labelStyle: TextStyle(
-          color: _getDynamicColor(),
+        labelStyle: const TextStyle(
+          color: Colors.black,
         ),
         prefixIcon: Icon(
           widget.prefix,
@@ -161,5 +162,31 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
     );
   }
+}
+
+void showToast({required String text, required ToastStates state}) =>
+    Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: chooseToastColor(state),
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+enum ToastStates { SUCCESS, ERROR, WARNING }
+
+Color chooseToastColor(ToastStates state) {
+  Color color;
+  switch (state) {
+    case ToastStates.SUCCESS:
+      color = Colors.green;
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red;
+    case ToastStates.WARNING:
+      color = Colors.yellow;
+  }
+  return color;
 }
 

@@ -10,4 +10,3 @@ Color primaryColor3 = HexColor('#FFE2E8');
 Color secondaryColor = HexColor('#CEAE45');
 
 Color backgroundColor = Colors.white;
-
