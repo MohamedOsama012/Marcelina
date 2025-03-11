@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:marcelina/shared/styles/color.dart';
 
 import '../styles/icon_broken.dart';
 
@@ -188,5 +189,76 @@ Color chooseToastColor(ToastStates state) {
       color = Colors.yellow;
   }
   return color;
+}
+
+
+Widget buildProductCard({
+  required String title,
+  required String subTitle,
+  required double price,
+  required String imagePath,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      decoration: BoxDecoration(
+        color: HexColor("#FFEFF3"),
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: AssetImage(imagePath),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              subTitle,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              "\$$price",
+              style: TextStyle(
+                fontSize: 14,
+                color: primaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
