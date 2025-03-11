@@ -132,16 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 (value) => false
             );
           }else if(state is LoginErrorState){
-
             showToast(text: _getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
-          }else if(state is RegisterSuccessState){
+          }else if(state is CreateUserSuccessState){
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LayoutScreen()),
                     (value) => false
             );
           }else if(state is RegisterErrorState){
-
             showToast(text: _getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
           }
         },
@@ -318,10 +316,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 child: const Text(
                                                   'Login',
                                                   style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20
+                                                    color: Colors.white,
+                                                    fontSize: 20
                                                   ),
-                                                ),
+                                                )
                                               ),
                                             ),
                                           ),

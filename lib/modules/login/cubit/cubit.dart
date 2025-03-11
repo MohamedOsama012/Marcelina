@@ -67,4 +67,7 @@ class LoginCubit extends Cubit<LoginStates>{
           emit(CreateUserSuccessState(e.toString()));
         });
   }
+
+
+
 }
