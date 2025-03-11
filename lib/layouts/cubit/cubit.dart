@@ -104,7 +104,7 @@ class AppCubit extends Cubit<AppStates>{
 
   final List<Widget> screens = [
     const HomeScreen(),
-    const ProfileScreen()
+    ProfileScreen()
   ];
 
   final List<String> title = [
