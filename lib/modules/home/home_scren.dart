@@ -64,6 +64,9 @@ class HomeScreen extends StatelessWidget {
                     subTitle: cubit.products[index]["subTitle"]!,
                     price: cubit.products[index]["price"]!,
                     imagePath: cubit.products[index]["imagePath"]!,
+                    onTap: () {
+                      cubit.addToCart(cubit.products[index]);
+                    },
                   );
                 },
               ),

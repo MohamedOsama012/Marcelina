@@ -195,11 +195,12 @@ Color chooseToastColor(ToastStates state) {
 Widget buildProductCard({
   required String title,
   required String subTitle,
-  required String price,
+  required double price,
   required String imagePath,
+  required VoidCallback onTap,
 }) {
   return GestureDetector(
-    onTap: () {},
+    onTap: onTap,
     child: Container(
       decoration: BoxDecoration(
         color: HexColor("#FFEFF3"),
@@ -248,7 +249,7 @@ Widget buildProductCard({
             ),
             const SizedBox(height: 4),
             Text(
-              price,
+              "\$$price",
               style: TextStyle(
                 fontSize: 14,
                 color: primaryColor,

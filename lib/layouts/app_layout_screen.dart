@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:marcelina/layouts/cubit/cubit.dart';
 import 'package:marcelina/layouts/cubit/states.dart';
+import 'package:marcelina/modules/cart/cart_screen.dart';
 import 'package:marcelina/shared/components/components.dart';
 import 'package:marcelina/shared/styles/color.dart';
 import 'package:marcelina/shared/styles/icon_broken.dart';
@@ -13,11 +14,7 @@ class LayoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        return AppCubit();
-      },
-      child: BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
           final cubit = AppCubit.get(context);
@@ -37,7 +34,12 @@ class LayoutScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   icon: const Icon(IconBroken.Bag),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartScreen()),
+                    );
+                  },
                 ),
               ],
             ),
@@ -62,7 +64,6 @@ class LayoutScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
+      );
   }
 }

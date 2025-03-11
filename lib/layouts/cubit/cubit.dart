@@ -18,77 +18,77 @@ class AppCubit extends Cubit<AppStates>{
     "Category 4",
   ];
 
-  final List<Map<String, String>> products = [
+  final List<Map<String, dynamic>> products = [
     {
       "title": "Letraset Perfume",
       "subTitle": "Publishing software",
-      "price": "\$45.00",
+      "price": 45.00,
       "imagePath": 'assets/images/logo.jpg',
     },
     {
       "title": "Contrary to Popular",
       "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
-      "imagePath": 'assets/images/logo.jpg',
-    },
-    {
-      "title": "Letraset Perfume",
-      "subTitle": "Publishing software",
-      "price": "\$45.00",
-      "imagePath": 'assets/images/logo.jpg',
-    },
-    {
-      "title": "Contrary to Popular",
-      "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
-      "imagePath": 'assets/images/logo.jpg',
-    },
-    {
-      "title": "Contrary to Popular",
-      "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
-      "imagePath": 'assets/images/logo.jpg',
-    },
-    {
-      "title": "Contrary to Popular",
-      "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
-      "imagePath": 'assets/images/logo.jpg',
-    },
-    {
-      "title": "Contrary to Popular",
-      "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
+      "price": 78.00,
       "imagePath": 'assets/images/logo.jpg',
     },
     {
       "title": "Letraset Perfume",
       "subTitle": "Publishing software",
-      "price": "\$45.00",
+      "price": 45.00,
       "imagePath": 'assets/images/logo.jpg',
     },
     {
       "title": "Contrary to Popular",
       "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
+      "price": 78.00,
       "imagePath": 'assets/images/logo.jpg',
     },
     {
       "title": "Contrary to Popular",
       "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
+      "price": 78.00,
       "imagePath": 'assets/images/logo.jpg',
     },
     {
       "title": "Contrary to Popular",
       "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
+      "price": 78.00,
       "imagePath": 'assets/images/logo.jpg',
     },
     {
       "title": "Contrary to Popular",
       "subTitle": "Nostrud exercitation",
-      "price": "\$78.00",
+      "price": 78.00,
+      "imagePath": 'assets/images/logo.jpg',
+    },
+    {
+      "title": "Letraset Perfume",
+      "subTitle": "Publishing software",
+      "price": 45.00,
+      "imagePath": 'assets/images/logo.jpg',
+    },
+    {
+      "title": "Contrary to Popular",
+      "subTitle": "Nostrud exercitation",
+      "price": 78.00,
+      "imagePath": 'assets/images/logo.jpg',
+    },
+    {
+      "title": "Contrary to Popular",
+      "subTitle": "Nostrud exercitation",
+      "price": 78.00,
+      "imagePath": 'assets/images/logo.jpg',
+    },
+    {
+      "title": "Contrary to Popular",
+      "subTitle": "Nostrud exercitation",
+      "price": 78.00,
+      "imagePath": 'assets/images/logo.jpg',
+    },
+    {
+      "title": "Contrary to Popular",
+      "subTitle": "Nostrud exercitation",
+      "price": 78.00,
       "imagePath": 'assets/images/logo.jpg',
     },
   ];
@@ -117,6 +117,38 @@ class AppCubit extends Cubit<AppStates>{
     emit(AppChangeBottomState());
   }
 
+  List<Map<String, dynamic>> cartItems = [];
+
+  void addToCart(Map<String, dynamic> product) {
+    int index = cartItems.indexWhere((item) => item['title'] == product['title']);
+    if (index != -1) {
+      cartItems[index]['quantity']++;
+    } else {
+      cartItems.add({...product, 'quantity': 1});
+    }
+    emit(AppCartUpdatedState());
+  }
+
+  void increaseQuantity(int index) {
+    cartItems[index]['quantity']++;
+    emit(AppCartUpdatedState());
+  }
+
+  void decreaseQuantity(int index) {
+    if (cartItems[index]['quantity'] > 1) {
+      cartItems[index]['quantity']--;
+    }
+    emit(AppCartUpdatedState());
+  }
+
+  void removeItem(int index) {
+    cartItems.removeAt(index);
+    emit(AppCartUpdatedState());
+  }
+
+  double getTotalPrice() {
+    return cartItems.fold(0, (sum, item) => sum + (item["price"] * item["quantity"]));
+  }
 
 
 }
