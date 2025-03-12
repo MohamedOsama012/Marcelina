@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marcelina/layouts/cubit/cubit.dart';
 import 'package:marcelina/layouts/cubit/states.dart';
+import 'package:marcelina/modules/product/product_screen.dart';
 import 'package:marcelina/shared/components/components.dart';
 import 'package:marcelina/shared/styles/color.dart';
 
@@ -65,7 +66,17 @@ class HomeScreen extends StatelessWidget {
                     price: cubit.products[index]["price"]!,
                     imagePath: cubit.products[index]["imagePath"]!,
                     onTap: () {
-                      cubit.addToCart(cubit.products[index]);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder:
+                              (context) => ProductScreen(
+                                  title: cubit.products[index]['title'],
+                                  subTitle: cubit.products[index]['description'],
+                                  price: cubit.products[index]['price'],
+                                  imagePath: cubit.products[index]['imagePath']
+                              )
+                          )
+                      );
                     },
                   );
                 },
