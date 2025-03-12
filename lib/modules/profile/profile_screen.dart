@@ -75,14 +75,6 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    ListTile(
-                      leading: const Icon(Icons.delete, color: Colors.red),
-                      title: const Text('Delete Account', style: TextStyle(color: Colors.red)),
-                      onTap: () {
-
-                      },
-                    ),
                     const Spacer(),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -104,7 +96,6 @@ class ProfileScreen extends StatelessWidget {
                               child: const Text('Sign Out', style: TextStyle(color: Colors.white)),
                             ),
                           ),
-
                         ],
                       ),
                     ),
