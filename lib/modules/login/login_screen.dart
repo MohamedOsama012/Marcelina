@@ -6,6 +6,8 @@ import 'package:marcelina/layouts/app_layout_screen.dart';
 import 'package:marcelina/modules/login/cubit/cubit.dart';
 import 'package:marcelina/modules/login/cubit/states.dart';
 import 'package:marcelina/shared/components/components.dart';
+import 'package:marcelina/shared/components/constants.dart';
+import 'package:marcelina/shared/network/local/cache_helper.dart';
 import 'package:marcelina/shared/styles/color.dart';
 import 'package:marcelina/shared/styles/icon_broken.dart';
 
@@ -126,20 +128,38 @@ class _LoginScreenState extends State<LoginScreen> {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, LoginStates state) {
           if(state is LoginSuccessState){
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LayoutScreen()),
-                (value) => false
-            );
+            CacheHelper.putData(
+                key: 'uId',
+                data: state.uId
+            ).then((value){
+              uId = state.uId;
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LayoutScreen()),
+                      (value) => false
+              );
+            });
+
           }else if(state is LoginErrorState){
+
             showToast(text: _getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
+
           }else if(state is CreateUserSuccessState){
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LayoutScreen()),
-                    (value) => false
-            );
+
+            CacheHelper.putData(
+                key: 'uId',
+                data: state.uId
+            ).then((value){
+              uId = state.uId;
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LayoutScreen()),
+                      (value) => false
+              );
+            });
+
           }else if(state is RegisterErrorState){
+
             showToast(text: _getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
           }
         },
