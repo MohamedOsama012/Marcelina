@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marcelina/layouts/cubit/states.dart';
+import 'package:marcelina/models/user_model.dart';
 import 'package:marcelina/modules/home/home_scren.dart';
 import 'package:marcelina/modules/profile/profile_screen.dart';
+import 'package:marcelina/shared/components/constants.dart';
 
 class AppCubit extends Cubit<AppStates>{
   AppCubit() : super(AppInitialState());
@@ -160,6 +163,24 @@ class AppCubit extends Cubit<AppStates>{
 
   double getTotalPrice() {
     return cartItems.fold(0, (sum, item) => sum + (item["price"] * item["quantity"]));
+  }
+
+  UserModel? userModel;
+
+  void getUserData(){
+    emit(AppGetUserLoadingState());
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .get()
+        .then((value){
+          userModel = UserModel.fromJson(value.data());
+          emit(AppGetUserSuccessState());
+        })
+        .catchError((error){
+          emit(AppGetUserErrorState(error.toString()));
+        });
   }
 
 
