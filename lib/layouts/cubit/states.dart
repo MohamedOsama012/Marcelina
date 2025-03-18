@@ -17,3 +17,17 @@ class AppGetUserErrorState extends AppStates {
   AppGetUserErrorState(this.error);
 }
 
+class AppUpdateUserLoadingState extends AppStates {}
+
+class AppUpdateUserSuccessState extends AppStates {}
+
+class AppUpdateUserErrorState extends AppStates {
+  final String error;
+  AppUpdateUserErrorState(this.error);
+}
+
+class AppChangeThemeModeLoadingState extends AppStates {}
+
+class AppChangeThemeModeSuccessState extends AppStates {}
+
+

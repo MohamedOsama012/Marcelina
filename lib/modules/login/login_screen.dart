@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marcelina/layouts/app_layout_screen.dart';
+import 'package:marcelina/layouts/cubit/cubit.dart';
 import 'package:marcelina/modules/login/cubit/cubit.dart';
 import 'package:marcelina/modules/login/cubit/states.dart';
 import 'package:marcelina/shared/components/components.dart';
@@ -30,60 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _confirmPasswordRegisterController = TextEditingController();
   final _nameRegisterController = TextEditingController();
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your email';
-    }
-    value = value.trim();
-    final emailRegex = RegExp(
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$",
-    );
-    if (!emailRegex.hasMatch(value)) {
-      return 'Enter a valid email address';
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your password';
-    }
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
-    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$');
-    if (!passwordRegex.hasMatch(value)) {
-      return 'Password must contain letters and numbers';
-    }
-    return null;
-  }
-
-  String? _validatePhoneNo(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your phone number';
-    }
-
-    final cleanedPhoneNo = value.replaceAll(RegExp(r'[^0-9]'), '');
-
-    final phoneRegex = RegExp(r'^[0-9]+$');
-    if (!phoneRegex.hasMatch(cleanedPhoneNo)) {
-      return 'Phone number can only contain digits';
-    }
-
-    if (cleanedPhoneNo.length < 6) {
-      return 'Phone number is too short';
-    }
-
-    return null;
-  }
-
-  String? _validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your full name';
-    }
-    return null;
-  }
-
   String? _validateConfirmPassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please confirm your password';
@@ -94,31 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  String _getFirebaseAuthErrorMessage(String errorCode) {
-    if (errorCode.contains('invalid-email')) {
-      return 'Invalid email format. Please enter a valid email.';
-    } else if (errorCode.contains('user-not-found')) {
-      return 'No user found with this email. Please sign up first.';
-    } else if (errorCode.contains('wrong-password')) {
-      return 'Incorrect password. Please try again.';
-    } else if (errorCode.contains('email-already-in-use')) {
-      return 'This email is already registered. Try logging in.';
-    } else if (errorCode.contains('weak-password')) {
-      return 'Your password is too weak. Try a stronger one.';
-    } else if (errorCode.contains('operation-not-allowed')) {
-      return 'Email sign-in is disabled. Contact support.';
-    } else if (errorCode.contains('too-many-requests')) {
-      return 'Too many failed attempts. Try again later.';
-    } else if (errorCode.contains('network-request-failed')) {
-      return 'Network error. Please check your internet connection.';
-    } else if (errorCode.contains('invalid-credential')) {
-      return 'Email or password is incorrect. Please try again.';
-    } else if (errorCode.contains('user-disabled')) {
-      return 'This account has been disabled. Contact support.';
-    } else {
-      return 'An unknown error occurred. Please try again.';
-    }
-  }
+
 
 
   @override
@@ -135,14 +58,19 @@ class _LoginScreenState extends State<LoginScreen> {
               uId = state.uId;
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => LayoutScreen()),
-                      (value) => false
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => AppCubit()..getUserData(),
+                    child: LayoutScreen(),
+                  ),
+                ),
+                    (route) => false,
               );
             });
 
           }else if(state is LoginErrorState){
 
-            showToast(text: _getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
+            showToast(text: getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
 
           }else if(state is CreateUserSuccessState){
 
@@ -153,14 +81,19 @@ class _LoginScreenState extends State<LoginScreen> {
               uId = state.uId;
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => LayoutScreen()),
-                      (value) => false
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => AppCubit()..getUserData(),
+                    child: LayoutScreen(),
+                  ),
+                ),
+                    (route) => false,
               );
             });
 
           }else if(state is RegisterErrorState){
 
-            showToast(text: _getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
+            showToast(text: getFirebaseAuthErrorMessage(state.error), state: ToastStates.ERROR);
           }
         },
         builder: (BuildContext context, LoginStates state) {
@@ -290,7 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             child: CustomTextField(
                                               controller: _emailSignInController,
                                               type: TextInputType.emailAddress,
-                                              validate: _validateEmail,
+                                              validate: validateEmail,
                                               label: 'Email',
                                               prefix: IconBroken.Message,
                                             ),
@@ -355,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             child: CustomTextField(
                                               controller: _nameRegisterController,
                                               type: TextInputType.name,
-                                              validate: _validateName,
+                                              validate: validateName,
                                               label: 'Name',
                                               prefix: IconBroken.Profile,
                                             ),
@@ -366,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             child: CustomTextField(
                                               controller: _emailRegisterController,
                                               type: TextInputType.emailAddress,
-                                              validate: _validateEmail,
+                                              validate: validateEmail,
                                               label: 'Email',
                                               prefix: IconBroken.Message,
                                             ),
@@ -377,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             child: CustomTextField(
                                               controller: _phoneRegisterController,
                                               type: TextInputType.phone,
-                                              validate: _validatePhoneNo,
+                                              validate: validatePhoneNo,
                                               label: 'Phone',
                                               prefix: IconBroken.Call,
                                             ),
@@ -393,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 cubit.changePasswordVisibility();
                                               },
                                               isPassword: cubit.isPassword,
-                                              validate: _validatePassword,
+                                              validate: validatePassword,
                                               label: 'Password',
                                               prefix: IconBroken.Lock,
                                             ),
