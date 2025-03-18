@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +44,11 @@ class LayoutScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: cubit.screens[cubit.currentBottomIndex],
+            body: ConditionalBuilder(
+                condition: cubit.userModel != null,
+                builder: (context) => cubit.screens[cubit.currentBottomIndex],
+                fallback: (context) => Center(child: CircularProgressIndicator(color: primaryColor,))
+            ),
             bottomNavigationBar: BottomNavigationBar(
               selectedItemColor: HexColor('#DD5D79'),
               currentIndex: cubit.currentBottomIndex,

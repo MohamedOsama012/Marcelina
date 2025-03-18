@@ -108,6 +108,16 @@ class AppCubit extends Cubit<AppStates>{
     },
   ];
 
+  bool isDark = false;
+
+  void changeThemeMode(){
+    emit(AppChangeThemeModeLoadingState());
+
+    isDark = !isDark;
+
+    emit(AppChangeThemeModeSuccessState());
+  }
+
   int selectedCategoryIndex = 0;
 
   void changeCategory(int index) {
@@ -145,13 +155,14 @@ class AppCubit extends Cubit<AppStates>{
   }
 
   void increaseQuantity(int index) {
-    cartItems[index]['quantity']++;
+    cartItems[index] = {...cartItems[index], 'quantity': cartItems[index]['quantity'] + 1};
     emit(AppCartUpdatedState());
   }
 
   void decreaseQuantity(int index) {
     if (cartItems[index]['quantity'] > 1) {
-      cartItems[index]['quantity']--;
+      cartItems[index] = {...cartItems[index], 'quantity': cartItems[index]['quantity'] - 1};
+
     }
     emit(AppCartUpdatedState());
   }
@@ -167,20 +178,40 @@ class AppCubit extends Cubit<AppStates>{
 
   UserModel? userModel;
 
-  void getUserData(){
+  void getUserData() {
     emit(AppGetUserLoadingState());
+    userModel = null;
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .get()
-        .then((value){
-          userModel = UserModel.fromJson(value.data());
-          emit(AppGetUserSuccessState());
-        })
-        .catchError((error){
-          emit(AppGetUserErrorState(error.toString()));
-        });
+    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+      if (value.exists && value.data() != null) {
+        userModel = UserModel.fromJson(value.data()!);
+        emit(AppGetUserSuccessState());
+      } else {
+        emit(AppGetUserErrorState("User data not found"));
+      }
+    }).catchError((error) {
+      emit(AppGetUserErrorState(error.toString()));
+    });
+  }
+
+  void updateUserData({required String name, required String phone}) {
+    if (userModel == null || uId == null) {
+      emit(AppUpdateUserErrorState("User not found"));
+      return;
+    }
+
+    emit(AppUpdateUserLoadingState());
+
+    FirebaseFirestore.instance.collection('users').doc(uId).update({
+      'name': name,
+      'phone': phone,
+    }).then((_) {
+      userModel!.name = name;
+      userModel!.phone = phone;
+      emit(AppUpdateUserSuccessState());
+    }).catchError((error) {
+      emit(AppUpdateUserErrorState(error.toString()));
+    });
   }
 
 
